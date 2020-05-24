@@ -11,6 +11,9 @@ import cufflinks as cf
 import plotly.express as px
 from urllib.request import urlopen
 import json
+import matplotlib.pyplot as plt
+import networkx as nx
+import vincent
 
 def stackBar(fig, go, yearCol, df3, df4, okrug):
     fig = go.Figure(data=[
@@ -415,6 +418,47 @@ def main():
     #custobBar(fig, go, yearCol, df3, df4, 'Уральский')
     #custobBar(fig, go, yearCol, df3, df4, 'Сибирский')
     #custobBar(fig, go, yearCol, df3, df4, 'Дальневосточный')
+
+    dfCome = pd.read_sql_query("SELECT okrug,SUM(Центральный) as 'Центральный',"
+    "SUM(\"Северо-Западный\") as 'Северо-Западный',"
+    "SUM(Южный) as 'Южный',SUM(\"Северо-Кавказский\") as 'Северо-Кавказский',"
+    "SUM(Приволжский) as 'Приволжский',"
+    "SUM(Уральский) as 'Уральский',SUM(Сибирский) as 'Сибирский',"
+    "SUM(Дальневосточный) as 'Дальневосточный' "
+    "FROM Migraciya  GROUP BY okrug", cnx)
+
+    
+    dfCome = dfCome.set_index('okrug')
+    
+    feature_2=[]
+    feature_1 = dfCome.index.to_list()
+    feature_1 = feature_1 + feature_1 + feature_1 + feature_1 + feature_1 + feature_1 + feature_1 + feature_1
+    feature_2 = feature_2+ feature_1
+    feature_1.sort()    
+    
+
+    score = []
+    df = pd.DataFrame({'f1': feature_1, 'f2': feature_2})
+
+    for i, row in df.iterrows():
+        score.append(dfCome.loc[row['f1']][row['f2']])
+
+    df['score']=score
+
+    G1 = nx.from_pandas_edgelist(df=df, source='f1', target='f2', edge_attr='score')
+    G = nx.DiGraph(G1)
+    
+    
+    pos = nx.spring_layout(G, k=10)  # For better example looking
+
+    edges = G.edges()
+    colors = [G[u][v]['score'] for u,v in edges]
+    weights = [G[u][v]['score']/200000 for u,v in edges]
+    
+    nx.draw(G, pos, with_labels=True, width=weights)
+    #labels = {e: G.edges[e]['score'] for e in G.edges}
+    #nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+    #plt.show()
     
     """ FINAL Визуализация мирации прибытие FINAL """
     """
@@ -545,8 +589,6 @@ def main():
     #ls = ('Москва, ВДНХ','Архангельск','Ростов-на-Дону','Махачкала','Казань','Екатеринбург','Омск','Хабаровск')
     #df2['Okrug'] = ls
     
-    print(df)
-    print(df2)
 
     ls = []
     for index,row in df.iterrows():
@@ -559,11 +601,10 @@ def main():
             ls.append(row['ALL'])
 
     df2 = df2.drop(df2.columns[0], axis='columns')
-    print(df2)
     df2 = df2.T
     fig = df2.iplot(asFigure=True, xTitle="Год",
                     yTitle="Кол-во человек", title="Погода по округам")
-    fig.show()
+    #fig.show()
 
     
     """ FINAL Визуализация погоды FINAL """
@@ -655,6 +696,35 @@ def main():
  
     """ FINAL Визуализация прогноза K FINAL """
     ######################################################
+
+    df = pd.DataFrame(columns=['Okrug','Total'])
+    j=0
+    for row in df1['Total'].T:
+        df.loc[j]=row
+        j+=1
+
+    
+    df['Okrug']=df1['Total'].T.index.to_list()
+    print(df)
+
+    from urllib.request import urlopen
+    with urlopen("file:///D:/Python/Projects/Parser%20Excel/map.geojson") as response:
+        counties = json.load(response)
+
+
+   
+    import plotly.express as px
+
+    fig = px.choropleth_mapbox(df, geojson=counties, locations='Okrug', color='Total',
+                               color_continuous_scale="Viridis",
+                               range_color=(-0.5651, 0.3472),
+                               mapbox_style="carto-positron",
+                               zoom=3, center = {"lat": 41.41845703125, "lon":50.69471783819287},
+                               opacity=0.5,
+                               labels={'unemp':'unemployment rate'}
+                              )
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.show()
     db.closeDB()
     
 #*************************************************************************************************#    
