@@ -112,11 +112,11 @@ def main():
     df = pd.DataFrame(df.T)
     df.columns = cols
     fig = df.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Уровень жизни по округам РФ", kind="bar")
+                    yTitle="У.е.", title="Уровень жизни по округам РФ", kind="bar")
     #fig.show()
 
     fig = df.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Уровень жизни по округам РФ")
+                    yTitle="У.е.", title="Уровень жизни по округам РФ")
     #fig.show()
     """ FINAL Визуализация уровень жизни FINAL """
     
@@ -197,11 +197,11 @@ def main():
     df3 = pd.DataFrame(df2)
     df3.columns = cols[1:len(cols)]
     fig = df3.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Загрязнение по округам РФ", kind="bar")
+                    yTitle="У.е.", title="Загрязнение по округам РФ", kind="bar")
     #fig.show()
 
     fig = df3.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Загрязнение по округам РФ")
+                    yTitle="У.е.", title="Загрязнение по округам РФ")
     #fig.show()
     """ FINAL Визуализация загрязнения FINAL """
     
@@ -591,20 +591,36 @@ def main():
     
 
     ls = []
+    name = ""
+    based_name_okrug = {
+        'Москва, ВДНХ': 'ЦФО (Москва, ВДНХ)',
+        'Архангельск': 'СЗФО (Архангельск)',
+        'Ростов-на-Дону': 'ЮФО (Ростов-на-Дону)',
+        'Махачкала': 'СКФО (Махачкала)',
+        'Казань': 'ПФО (Казань)',
+        'Екатеринбург': 'УФО (Екатеринбург)',
+        'Омск': 'СФО (Омск)',
+        'Хабаровск': 'ДФО (Хабаровск)'
+    }
     for index,row in df.iterrows():
-        if str(row['year']).find('2000')==-1 or int(index) == 0:
-            ls.append(row['ALL'])
+        if (str(row['year']).find('2000')==-1 or int(index) == 0) and int(index) !=151:
+            ls.append(row['ALL'])            
         else:
-            ls.insert(0,row['name'])
-            df2.loc[row['name']]=ls
+            if(int(index) == 151):
+                ls.append(row['ALL']) 
+            ls.insert(0,based_name_okrug[name])
+            df2.loc[based_name_okrug[name]]=ls
             ls = []
             ls.append(row['ALL'])
-
+        name = row['name']
+        
+            
+    print(df2)
     df2 = df2.drop(df2.columns[0], axis='columns')
     df2 = df2.T
     fig = df2.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Погода по округам")
-    #fig.show()
+                    yTitle="Градусы Цельсия", title="Погода по округам")
+    fig.show()
 
     
     """ FINAL Визуализация погоды FINAL """
@@ -639,11 +655,11 @@ def main():
     df1.columns = cols
 
     fig = df1.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Итог качества округов РФ", kind="bar")
+                    yTitle="У.е.", title="Итог качества округов РФ", kind="bar")
     #fig.show()
 
     fig = df1.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Итог качества округов РФ")
+                    yTitle="У.е.", title="Итог качества округов РФ")
     #fig.show()
     
     """ FINAL Визуализация K FINAL """
@@ -690,7 +706,7 @@ def main():
     df1['Total']=ls
 
     fig = df1['Total'].T.iplot(asFigure=True, xTitle="Год",
-                    yTitle="Кол-во человек", title="Общий итог качества (миграция, уровень жизни, безработица)", kind="bar")
+                    yTitle="У.е.", title="Общий итог качества (миграция, уровень жизни, безработица)", kind="bar")
     #fig.show()
 
  
@@ -709,6 +725,7 @@ def main():
 
     from urllib.request import urlopen
     with urlopen("file:///D:/Python/Projects/Parser%20Excel/map.geojson") as response:
+    #with urlopen("file:///C:/Users/sds.TO/Desktop/%D0%9C%D0%98%D0%A4%D0%98/6%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/Python/Projects/Parser%20Excel/Regions.geojson") as response:
         counties = json.load(response)
 
 
@@ -724,7 +741,7 @@ def main():
                                labels={'unemp':'unemployment rate'}
                               )
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    fig.show()
+    #fig.show()
     db.closeDB()
     
 #*************************************************************************************************#    
