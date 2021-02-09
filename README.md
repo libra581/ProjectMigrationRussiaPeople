@@ -46,6 +46,6 @@
 ![Анализ_формула](https://i.pinimg.com/originals/93/52/e1/9352e135d8264e7600147d1bb1c29e65.png)
 ![Анализ_1](https://i.pinimg.com/originals/fe/52/54/fe5254767e01f3dda79560412c6297a0.png)
 ![Анализ_2](https://i.pinimg.com/originals/a8/41/c4/a841c41288768c8a1928df72bdeba336.png)
-![Анализ_3](https://www.pinterest.ru/pin/675751119088125410)
+![Анализ_3](https://i.pinimg.com/originals/18/80/3d/18803db42b596d9d4716e3078c3fbaff.png)
 
 
