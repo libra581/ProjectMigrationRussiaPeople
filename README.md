@@ -43,14 +43,22 @@ P.S. Так как API платное, то было решение замени
 * SQLite
 
 # Результаты
-![Миграция_выбытия](https://i.pinimg.com/originals/f2/da/b8/f2dab82dec16ae7f567bd6c2cee21836.png) <br>
-![Миграция_прибытия](https://i.pinimg.com/originals/6a/99/97/6a9997f32e82ce09862dff198828d6aa.png) <br>
-![Миграция_граф](https://i.pinimg.com/originals/22/c8/8a/22c88af17442a0ad35951f9487fba4fb.png) <br>
+![Миграция_выбытия](https://i.pinimg.com/originals/f2/da/b8/f2dab82dec16ae7f567bd6c2cee21836.png "Внутренняя миграция населения по округам РФ (Выбытие)") <br>
+![Миграция_прибытия](https://i.pinimg.com/originals/6a/99/97/6a9997f32e82ce09862dff198828d6aa.png "Внутренняя миграция населения по округам РФ (Прибытие)") <br>
+![Миграция_граф](https://i.pinimg.com/originals/22/c8/8a/22c88af17442a0ad35951f9487fba4fb.png "Граф внутренней миграции населения") <br>
 
 # Анализ
-![Анализ_формула](https://i.pinimg.com/originals/93/52/e1/9352e135d8264e7600147d1bb1c29e65.png)
-![Анализ_1](https://i.pinimg.com/originals/fe/52/54/fe5254767e01f3dda79560412c6297a0.png)
-![Анализ_2](https://i.pinimg.com/originals/a8/41/c4/a841c41288768c8a1928df72bdeba336.png)
-![Анализ_3](https://i.pinimg.com/originals/18/80/3d/18803db42b596d9d4716e3078c3fbaff.png)
+Для анализа применены следующие формулы: <br>
+![Анализ_формула](https://i.pinimg.com/originals/93/52/e1/9352e135d8264e7600147d1bb1c29e65.png)<br>
+
+Итог качества округов РФ: <br>
+![Анализ_1](https://i.pinimg.com/originals/fe/52/54/fe5254767e01f3dda79560412c6297a0.png)<br>
+
+Общий итог качества жизни (основан на датасетах - миграция, уровень жизни, безработица):<br>
+P.S. Если столбец отрицателен - тогда в данном регионе регрессия уровня жизни, иначе - прогрессия.<br>
+![Анализ_2](https://i.pinimg.com/originals/a8/41/c4/a841c41288768c8a1928df72bdeba336.png)<br>
+
+Карта отображения общего итога качества жизни:<br>
+![Анализ_3](https://i.pinimg.com/originals/18/80/3d/18803db42b596d9d4716e3078c3fbaff.png)<br>
 
 
